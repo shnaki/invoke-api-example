@@ -1,6 +1,10 @@
 import requests
+from rich.console import Console
+from rich.table import Table
+from rich.panel import Panel
 
 BASE_URL = "https://jsonplaceholder.typicode.com"
+console = Console()
 
 
 def get_posts():
@@ -8,9 +12,24 @@ def get_posts():
     response = requests.get(f"{BASE_URL}/posts")
     response.raise_for_status()
     posts = response.json()[:5]
-    print("=== GET /posts (先頭5件) ===")
+
+    table = Table(
+        title="投稿一覧（先頭5件）",
+        show_header=True,
+        header_style="bold cyan",
+        border_style="dim",
+        title_style="bold green",
+        expand=True,
+    )
+    table.add_column("ID", justify="right", style="cyan", width=4)
+    table.add_column("タイトル", style="white", max_width=60, overflow="fold")
+
     for post in posts:
-        print(f"  [{post['id']}] {post['title']}")
+        table.add_row(str(post["id"]), post["title"])
+
+    console.print()
+    console.print(Panel(table, border_style="green", padding=(0, 1)))
+    console.print()
     return posts
 
 
