@@ -1,3 +1,10 @@
+# Python
 .venv/
 __pycache__/
+
+# IDE
 .idea/
+
+# AI tooling
+.ai/
+.claude
